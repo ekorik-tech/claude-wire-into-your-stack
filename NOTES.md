@@ -79,18 +79,22 @@ claude -p "Run npm test once and reply with a 3-line report: total tests, passed
 - **MCP, approval:** `claude mcp list` in that folder shows `filesystem` as "Pending approval (run `claude` to approve)". Approval is stored per folder, so a new clone needs one interactive approval.
 - **Hook:** `guard-bash.js` gave the expected exit code on 11 of 11 sample commands, including the `echo "rm -rf"` false positive.
 - **Skill:** a headless planning request for a partial user update, with no skill name given, called `Skill` with `express-route-conventions`.
-- **/review-api routes/users.js:** the run applied the PUT partial-update rule (at least one field, not both). The `PUT` check reported PASS.
+- **/review-api routes/users.js:** the run applied the PUT partial-update rule (at least one field, not both). The partial-PUT rule (one field is enough) reported PASS. This does not clear the empty-string finding in section 4.
 
-## 9. New clone check (Windows 11, interactive approval)
+## 9. Fresh clone check (Windows 11)
 
-Results from the new clone, using the checks already recorded above (sections 1, 5, 7, 8). No new runs were added for this section.
+Clone path: `C:\Users\angie\AppData\Local\Temp\claude-fresh-1795357186\fresh`. This is a separate clone from the `git archive` copy in section 8.
 
-- **Tests:** `npm test` 5 pass, 0 fail (same as section 8).
-- **Lint:** `npm run lint` clean (same as section 8).
-- **MCP read:** after one interactive approval of `filesystem`, `mcp__filesystem__read_text_file` read `docs/api.md`, and Claude listed the five routes in it.
-- **Command:** `/review-api routes/users.js` ran in the clean copy, as in section 8.
-- **Skill autoload:** a headless planning request with no skill name called `express-route-conventions` (section 8).
-- **Hook block:** a real Bash deletion was blocked through Claude (section 5, run on the working copy). The clean copy was checked only by running `guard-bash.js` on sample commands (exit codes matched in section 8), not by a real Claude deletion attempt.
+Results below come from the earlier check of this fresh clone. **These checks were not repeated for this note.**
+
+- **Tests:** `npm test` 5 pass, 0 fail.
+- **Lint:** `npm run lint` exit 0.
+- **MCP:** `filesystem` was approved interactively, then `mcp__filesystem__read_text_file` read `docs/api.md` and Claude listed its five routes.
+- **Command:** `/review-api` ran.
+  - **PASS** covers only the partial-PUT rule: one field is enough.
+  - **Accepting an empty string** is a separate finding, already recorded in section 4. The PASS does not mean all review criteria passed.
+- **Skill autoload:** the `express-route-conventions` skill loaded automatically.
+- **Hook:** a real Bash deletion attempt of the temp folder `hook-target` through Claude was blocked by the hook. The folder and `sub/file.txt` were left unchanged.
 - **Not checked:** other operating systems (macOS, Linux).
 
 ## Not done / not verified
