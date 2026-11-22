@@ -81,6 +81,18 @@ claude -p "Run npm test once and reply with a 3-line report: total tests, passed
 - **Skill:** a headless planning request for a partial user update, with no skill name given, called `Skill` with `express-route-conventions`.
 - **/review-api routes/users.js:** the run applied the PUT partial-update rule (at least one field, not both). The `PUT` check reported PASS.
 
+## 9. New clone check (Windows 11, interactive approval)
+
+Results from the new clone, using the checks already recorded above (sections 1, 5, 7, 8). No new runs were added for this section.
+
+- **Tests:** `npm test` 5 pass, 0 fail (same as section 8).
+- **Lint:** `npm run lint` clean (same as section 8).
+- **MCP read:** after one interactive approval of `filesystem`, `mcp__filesystem__read_text_file` read `docs/api.md`, and Claude listed the five routes in it.
+- **Command:** `/review-api routes/users.js` ran in the clean copy, as in section 8.
+- **Skill autoload:** a headless planning request with no skill name called `express-route-conventions` (section 8).
+- **Hook block:** a real Bash deletion was blocked through Claude (section 5, run on the working copy). The clean copy was checked only by running `guard-bash.js` on sample commands (exit codes matched in section 8), not by a real Claude deletion attempt.
+- **Not checked:** other operating systems (macOS, Linux).
+
 ## Not done / not verified
 
 - Fresh clone run on another machine. The clean copy above was made on this machine only.
