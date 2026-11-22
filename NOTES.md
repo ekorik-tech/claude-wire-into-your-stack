@@ -71,7 +71,17 @@ claude -p "Run npm test once and reply with a 3-line report: total tests, passed
 - `npm run lint`: clean.
 - `npm audit`: 3 vulnerabilities in transitive dependencies of Express (`body-parser` high, `proxy-addr` critical, `qs` moderate). **Not fixed:** `npm audit fix` changes `package-lock.json`, which is out of scope for this task. Recommend a separate change.
 
+## 8. Clean copy of the committed branch (this machine)
+
+- Source: `git archive` of `feat/claude-stack` into an empty scratch folder. No `settings.local.json`.
+- `npm ci`, `npm test`: 5 pass, 0 fail. `npm run lint`: exit 0.
+- **MCP, headless:** `claude -p` read `docs/api.md` through `mcp__filesystem__read_text_file` with no error; the result contained the real file.
+- **MCP, approval:** `claude mcp list` in that folder shows `filesystem` as "Pending approval (run `claude` to approve)". Approval is stored per folder, so a new clone needs one interactive approval.
+- **Hook:** `guard-bash.js` gave the expected exit code on 11 of 11 sample commands, including the `echo "rm -rf"` false positive.
+- **Skill:** a headless planning request for a partial user update, with no skill name given, called `Skill` with `express-route-conventions`.
+- **/review-api routes/users.js:** the run applied the PUT partial-update rule (at least one field, not both). The `PUT` check reported PASS.
+
 ## Not done / not verified
 
-- Fresh clone run on another machine.
+- Fresh clone run on another machine. The clean copy above was made on this machine only.
 - Hook behavior on macOS/Linux.
